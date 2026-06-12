@@ -1,0 +1,37 @@
+# Caesar Cipher — developer shortcuts
+# Requires: https://github.com/casey/just
+
+default:
+    @just --list
+
+# Install dependencies (requires uv)
+install:
+    uv sync
+
+# Run all tests
+test:
+    uv run pytest -v
+
+# Run tests with coverage
+coverage:
+    uv run pytest --cov=caesar_cipher --cov-report=term-missing
+
+# Encrypt a message  (usage: just encrypt "Hello World" 3)
+encrypt TEXT SHIFT:
+    uv run python main.py encrypt "{{TEXT}}" {{SHIFT}}
+
+# Decrypt a message  (usage: just decrypt "Khoor Zruog" 3)
+decrypt TEXT SHIFT:
+    uv run python main.py decrypt "{{TEXT}}" {{SHIFT}}
+
+# Brute-force all shifts  (usage: just brute "Khoor!")
+brute TEXT:
+    uv run python main.py brute-force "{{TEXT}}"
+
+# Format code with yapf
+fmt:
+    uv run yapf --in-place --recursive src tests main.py
+
+# Lint with ruff
+lint:
+    uv run ruff check src tests main.py
